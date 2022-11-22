@@ -21,9 +21,14 @@ class PokemonViewController: UIViewController {
     @IBOutlet
     var answerButtons: [UIButton]!
     
+    // agregamos el manager
+    lazy var pokemonManager = PokemonManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.decorationButton()
+        decorationButton()
+        pokemonManager.fetchPokemon()
+        
     }
     
     @IBAction
@@ -44,6 +49,19 @@ class PokemonViewController: UIViewController {
         }
     }
     
+    
+    
+}
+
+extension PokemonViewController : PokemonManagerDelegate {
+    
+    func didUpdatePokemon(pokemons: [PokemonModel]) {
+        print(pokemons)
+    }
+    
+    func didFailWithError(error: Error) {
+        print(error)
+    }
     
     
 }
