@@ -10,7 +10,7 @@ import Foundation
 
 struct GameModel {
     var score = 0
-    mutating func checkAnswer(userAnswer: String, correctAnswer: String) -> Bool {
+    mutating func checkAnswer(_ userAnswer: String, _ correctAnswer: String) -> Bool {
         if userAnswer.lowercased() == correctAnswer.lowercased() {
             score += 1
             return true

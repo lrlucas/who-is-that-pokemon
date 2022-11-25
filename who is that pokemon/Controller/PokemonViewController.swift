@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class PokemonViewController: UIViewController {
 
@@ -26,7 +27,11 @@ class PokemonViewController: UIViewController {
     lazy var imageManager = ImageManager()
     lazy var game = GameModel()
     
-    var random4Pokemon : [PokemonModel] = []
+    var random4Pokemon : [PokemonModel] = [] {
+        didSet {
+            setButtonTitles()
+        }
+    }
     var correctAnswer : String = ""
     var correctAnswerImage : String = ""
     
@@ -34,17 +39,25 @@ class PokemonViewController: UIViewController {
         super.viewDidLoad()
         pokemonManager.delegate = self
         imageManager.delegate = self
-        print("SCORE: \(game.score)")
+        
         
         decorationButton()
         pokemonManager.fetchPokemon()
+        labelMessage.text = ""
         
     }
     
     @IBAction
     func buttonPressed(_ sender: UIButton) {
-        guard let title : String = sender.title(for: .normal) else { return }
-        print(title)
+        print("BOTON")
+        let userAnswer = sender.title(for: .normal)!
+        if game.checkAnswer(userAnswer, correctAnswer) {
+            labelMessage.text = "Si es un \(userAnswer)"
+            labelScore.text = "Puntaje: \(game.score)"
+            
+            sender.layer.borderColor = UIColor.systemGreen.cgColor
+            sender.layer.borderWidth = 2
+        }
         
     }
     
@@ -59,6 +72,14 @@ class PokemonViewController: UIViewController {
         }
     }
     
+    func setButtonTitles() {
+        for (index, button) in answerButtons.enumerated() {
+            DispatchQueue.main.async { [self] in
+                button.setTitle(self.random4Pokemon[safe: index]?.name.capitalized, for: .normal)
+            }
+        }
+    }
+    
     
     
 }
@@ -70,6 +91,12 @@ extension PokemonViewController : ImageManagerDelegate {
     
     func didUpdateImage(image: ImageModel) {
         print("IMAGEN: \(image.imageUrl)")
+        correctAnswerImage = image.imageUrl
+        DispatchQueue.main.async { [self] in
+            let url = URL(string: image.imageUrl)
+            let effect = ColorControlsProcessor(brightness: -1, contrast: 1, saturation: 1, inputEV: 0)
+            pokemonImage.kf.setImage(with: url, options: [.processor(effect)])
+        }
     }
     
     
@@ -81,6 +108,7 @@ extension PokemonViewController : PokemonManagerDelegate {
         random4Pokemon = pokemons.choose(4)
         let index = Int.random(in: 0...3)
         let imageData = random4Pokemon[index].imageUrl
+        correctAnswer = random4Pokemon[index].name
         imageManager.fetchImage(url: imageData)
         
         print(pokemons.choose(4))
