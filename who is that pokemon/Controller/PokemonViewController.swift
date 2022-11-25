@@ -49,15 +49,45 @@ class PokemonViewController: UIViewController {
     
     @IBAction
     func buttonPressed(_ sender: UIButton) {
-        print("BOTON")
         let userAnswer = sender.title(for: .normal)!
         if game.checkAnswer(userAnswer, correctAnswer) {
-            labelMessage.text = "Si es un \(userAnswer)"
+            labelMessage.text = "Si es un \(userAnswer.capitalized)"
             labelScore.text = "Puntaje: \(game.score)"
             
             sender.layer.borderColor = UIColor.systemGreen.cgColor
             sender.layer.borderWidth = 2
+            
+            let url = URL(string: correctAnswerImage)
+            pokemonImage.kf.setImage(with: url)
+            
+            Timer.scheduledTimer(withTimeInterval: 0.8, repeats: false) { timer in
+                self.pokemonManager.fetchPokemon()
+                self.labelMessage.text = ""
+                sender.layer.borderWidth = 0
+                
+            }
+        } else {
+            labelMessage.text = "No, es un \(correctAnswer.capitalized)"
+            sender.layer.borderColor = UIColor.systemRed.cgColor
+            sender.layer.borderWidth = 2
+            let url = URL(string: correctAnswerImage)
+            pokemonImage.kf.setImage(with: url)
+       
+            Timer.scheduledTimer(withTimeInterval: 0.8, repeats: false) { timer in
+                self.resetGame()
+                sender.layer.borderWidth = 0
+                
+            }
         }
+        
+    }
+    
+    func resetGame() {
+        self.pokemonManager.fetchPokemon()
+        game.setScore(score: 0)
+        labelScore.text = "Puntaje: \(game.score)"
+        self.labelMessage.text = ""
+       
         
     }
     
@@ -84,6 +114,8 @@ class PokemonViewController: UIViewController {
     
 }
 
+
+// ImageManager
 extension PokemonViewController : ImageManagerDelegate {
     func didFailWithErrorImage(error: Error) {
         print(error)
@@ -102,6 +134,7 @@ extension PokemonViewController : ImageManagerDelegate {
     
 }
 
+// PokemonManager
 extension PokemonViewController : PokemonManagerDelegate {
     
     func didUpdatePokemon(pokemons: [PokemonModel]) {
