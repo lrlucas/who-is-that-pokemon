@@ -134,6 +134,7 @@
                         <outletCollection property="answerButtons" destination="s8P-Tu-ouw" collectionClass="NSMutableArray" id="IJu-5h-oSx"/>
                         <outletCollection property="answerButtons" destination="W7F-7Q-PUE" collectionClass="NSMutableArray" id="v55-Vl-7S1"/>
                         <segue destination="For-mf-rOd" kind="presentation" identifier="goToResults" modalPresentationStyle="fullScreen" id="rRf-4W-uwv"/>
+                        <segue destination="For-mf-rOd" kind="presentation" identifier="goToResult" modalPresentationStyle="fullScreen" id="1Ka-bV-TPV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -144,7 +145,7 @@
         <scene sceneID="rIj-8a-Kaa">
             <objects>
                 <viewController id="For-mf-rOd" customClass="ResultsViewController" customModule="who_is_that_pokemon" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Lsw-wP-l0m">
+                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="Lsw-wP-l0m">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -188,6 +189,9 @@
                                         <buttonConfiguration key="configuration" style="filled" title="Jugar de nuevo">
                                             <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="21"/>
                                         </buttonConfiguration>
+                                        <connections>
+                                            <action selector="playAgainPress:" destination="For-mf-rOd" eventType="touchUpInside" id="OJn-cW-Ar5"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -207,7 +211,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="Oj2-6v-hZC"/>
                     <connections>
-                        <outlet property="pokemonLabel" destination="bbB-gi-cHs" id="Mj5-qa-28y"/>
+                        <outlet property="pokemonImage" destination="9Ig-zH-xU7" id="wg1-Vf-O6R"/>
+                        <outlet property="pokemonLabel" destination="bbB-gi-cHs" id="58M-GF-j2v"/>
+                        <outlet property="scoreLabel" destination="zmE-qW-a4E" id="ge7-wQ-rmJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jaT-i2-BTY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -215,6 +221,9 @@
             <point key="canvasLocation" x="973.84615384615381" y="105.92417061611374"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="1Ka-bV-TPV"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="pika" width="158.33332824707031" height="158.33332824707031"/>
         <image name="pikachu" width="85.333335876464844" height="85"/>
